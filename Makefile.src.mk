@@ -22,10 +22,12 @@ MODEL_LIB_DEFS += MODELSIM
 MODEL_LIB_INCS :=
 MODEL_LIB_INCS += $(UVM_HOME)/src
 MODEL_LIB_INCS += $(UVM_HOME)/src/macros
-MODEL_LIB_INCS += $(PRJ_ROOT)/simple_alu
+MODEL_LIB_INCS += $(PRJ_ROOT)/rtl
+MODEL_LIB_INCS += $(PRJ_ROOT)/rtl/soc
 
 MODEL_LIB_SRCS :=
-MODEL_LIB_SRCS += $(PRJ_ROOT)/simple_alu/alu.sv
+MODEL_LIB_SRCS += $(PRJ_ROOT)/rtl/soc/soc_top.sv
+MODEL_LIB_SRCS += $(PRJ_ROOT)/rtl/alu.sv
 
 MODEL_LIB_LIBLIST :=
 MODEL_LIB_LIBLIST += uvm_lib
@@ -44,10 +46,11 @@ TEST_LIB_DEFS += CUSTOM_REPORT_SERVER
 TEST_LIB_INCS :=
 TEST_LIB_INCS += $(UVM_HOME)/src
 TEST_LIB_INCS += $(UVM_HOME)/src/macros
-TEST_LIB_INCS += $(PRJ_ROOT)/simple_alu
+TEST_LIB_INCS += $(PRJ_ROOT)/rtl/soc
+TEST_LIB_INCS += $(PRJ_ROOT)/tb
 
 TEST_LIB_SRCS :=
-TEST_LIB_SRCS += $(PRJ_ROOT)/simple_alu/alu_tb.sv
+TEST_LIB_SRCS += $(PRJ_ROOT)/tb/top_tb.sv
 
 TEST_LIB_LIBLIST :=
 TEST_LIB_LIBLIST += uvm_lib
@@ -57,7 +60,7 @@ EXPANDED_TEST_LIB_LIBLIST = $(foreach x,$(TEST_LIB_LIBLIST),-liblist $(x))
 EXPANDED_TEST_LIB_DEFS = $(foreach x,$(TEST_LIB_DEFS),+define+$(x))
 EXPANDED_TEST_LIB_INCS = $(foreach x,$(TEST_LIB_INCS),+incdir+$(x))
 
-TB_TOP = alu_tb
+TB_TOP = top_tb
 TESTNAME = test_demo
 
 define MODEL_BUILD
@@ -135,6 +138,8 @@ VSIM_OPTS += -c
 VSIM_OPTS += -64
 VSIM_OPTS += -dpicpppath /usr/bin/gcc
 
+VSIM_SCRIPTS := sim/questa/scripts
+
 # FIXME: need to figure out how to point to local UVM version
 #qrun:
 #	qrun -quiet $(EXPANDED_MODEL_LIB_DEFS) $(MODEL_LIB_SRCS) $(EXPANDED_TEST_LIB_DEFS) $(TEST_LIB_SRCS)
@@ -145,7 +150,7 @@ vlog:
 	vlog -work work $(VLOG_OPTS) $(EXPANDED_TEST_LIB_DEFS) $(EXPANDED_TEST_LIB_INCS) $(TEST_LIB_SRCS)
 
 vsim: vlog
-	vsim $(VSIM_OPTS) +UVM_TESTNAME=$(TESTNAME) $(TB_TOP) -do run.do
+	vsim $(VSIM_OPTS) +UVM_TESTNAME=$(TESTNAME) $(TB_TOP) -do $(VSIM_SCRIPTS)/run.do
 
 verilate:
 	@echo "-- Verilator hello-world simple binary example"

@@ -1,0 +1,53 @@
+riscv_demo/
+│
+├── rtl/                        # RTL design files (Verilog)
+│   ├── alu.v
+│   ├── core/                   # RISC-V core-specific logic
+│   ├── soc/                    # SoC integration (e.g., memory map, peripherals)
+│   └── common/                 # Shared modules/utilities
+│
+├── sim/                        # Simulation-specific files
+│   ├── verilator/              # Verilator simulation setup
+│   │   ├── Makefile
+│   │   └── main.cpp            # C++ test harness (optional)
+│   └── questa/                 # QuestaSim simulation setup
+│       └── scripts/            # Do/compile/run scripts
+│
+├── tb/                         # UVM-based testbench (SystemVerilog)
+│   ├── env/                    # Environment components (agents, monitors, etc.)
+│   ├── tests/                  # Specific test scenarios
+│   ├── seqs/                   # UVM sequences
+│   ├── dut_if.sv               # DUT interface
+│   ├── top_tb.sv               # Top-level testbench
+│   └── Makefile or compile.tcl
+│
+├── fpga/                       # FPGA synthesis files (constraints, wrappers)
+│   ├── top_fpga.v
+│   ├── constraints.xdc         # For Xilinx
+│   └── synthesis.tcl
+│
+├── include/                    # RISC-V instruction encoding, macros, etc.
+│   └── riscv_defs.vh
+│
+├── sw/                         # Assembly/C tests or firmware for the core
+│   └── bootloader.S
+│
+├── docs/                       # Block diagrams, spec, architecture, README files
+│   └── arch_diagram.drawio
+│
+├── scripts/                    # Helper scripts (Python, Bash, Makefiles)
+│   └── gen_test.py
+│
+├── tests/                      # Generated test vectors or raw assembly test cases
+│
+├── makefiles                   # Tool Makefiles
+│
+├── Makefile.deps.mk
+│
+├── Makefile.src.mk
+│
+├── Makefile
+│
+├── .gitignore
+│
+└── README.md
